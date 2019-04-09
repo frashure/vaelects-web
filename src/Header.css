@@ -1,0 +1,23 @@
+.app-header {
+    background-color: black;
+    color: white;
+    height: auto;
+    width: 100%;
+    text-align: left;
+}
+
+h2 {
+    display: inline-block;
+    margin-left: 10px;
+    margin-right: 100px;
+}
+
+a {
+    text-decoration: none;
+    color: lightblue;
+    margin-right: 50px;
+}
+
+a:hover {
+    color: red;
+}
