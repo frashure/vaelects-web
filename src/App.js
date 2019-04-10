@@ -57,7 +57,7 @@ class Search extends Component {
     }
   
     let address = document.getElementById('address').value;
-    let google_url = 'https://www.googleapis.com/civicinfo/v2/representatives?key=AIzaSyAv6P3nMatlEBeUlWVLeZ9thHg3WZoGHtc&address='+address;
+    let google_url;
     let vaelects_url = 'http://api.virginiaelects.com/candidates/address/'+address;
     let candidateResults;
     fetch(vaelects_url).then(results => {console.log(results); candidateResults = results});
