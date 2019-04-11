@@ -3,15 +3,8 @@ import logo from './logo.svg';
 import './App.css';
 import './Header.css';
 import './Search.css';
+import './Card.css';
 
-
-
-function buildCandidates(elections) {
-  let cards = [];
-  elections.foreach(c => {
-    
-  })
-}
 
 class Header extends Component {
   render() {
@@ -27,9 +20,39 @@ class Header extends Component {
 }
 
 class Card extends Component {
+
+
   render() {
+
+
+    let bgColor = '';
+    switch (this.props.party) {
+      case 'Independent':
+        bgColor = 'white';
+        break;
+      case 'Republican':
+        bgColor = 'red';
+        break;
+      case 'Democratic':
+        bgColor = 'blue';
+        break;
+      case 'Libertarian':
+        bgColor = 'yellow';
+        break;
+      case 'Green':
+        bgColor = 'lightgreen';
+        break;
+      default:
+        break;
+    }
+
+    let textColor = 'black';
+    if (this.props.party == 'Democratic') {
+      textColor = 'white';
+    }
+
     return (
-      <div className="card">
+      <div className="card" style={{backgroundColor: bgColor, color: textColor}}>
         <div className="candidate-info">
         Name: {this.props.firstName + ' ' + this.props.lastName}
         <br/>
@@ -51,23 +74,26 @@ class Search extends Component {
   }
 
   search() {
-    let rc = document.getElementById('resultsContainer');
-    while (rc.firstChild) {
-      rc.removeChild(rc.firstChild)
-    }
+    // let rc = document.getElementById('resultsContainer');
+    // while (rc.firstChild) {
+    //   rc.removeChild(rc.firstChild)
+    // }
   
     let address = document.getElementById('address').value;
-    let google_url;
     let vaelects_url = 'http://api.virginiaelects.com/candidates/address/'+address;
     let candidateResults;
-    fetch(vaelects_url).then(results => {console.log(results); candidateResults = results});
+    fetch(vaelects_url)
+      .then(response => response.json())
+      .then(data =>  {this.setState({candidates: data}); console.log(this.state.candidates)});
+    // console.log(candidateResults);
 
     // candidates.foreach(c => {
     //   let card = document.createElement('div');
     //   card.innerHTML = c.first;
     //   rc.appendChild(card);
     // })
-    this.setState({candidates: candidateResults})
+    // this.setState({candidates: candidateResults});
+
   }
 
   handleChange(event) {
@@ -80,10 +106,10 @@ class Search extends Component {
     return (
       <div className="app-body">
         <div className="search-form" id="search-form">
-          <form >
+          <form id="address-search">
             <label htmlFor="address">Enter an address: </label>
             <input type="text" id="address" name="address" value={this.state.address} onChange={this.handleChange.bind(this)}></input>
-            <button type="submit" onClick={this.search.bind(this)}>Submit</button>
+            <button type="button" onClick={this.search.bind(this)}>Submit</button>
           </form>
         </div>
         <div id="resultsContainer">
