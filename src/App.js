@@ -19,12 +19,30 @@ class Header extends Component {
   }
 }
 
-class Card extends Component {
-
-
+class Election extends Component {
   render() {
+    return (
+      <div id='election-container'>
+        Date: {this.props.date}
+        <br />
+        Office: {this.props.office}
+        <br />
+        Type: {this.props.type}
+        <br />
+        District: {this.props.district}
+        <br />
+        Candidates: 
+        <br />
+        {this.props.candidates.map(c => {
+          return <Card firstName={c.firstName} lastName={c.lastName} party={c.party}/>
+        })}
+      </div>
+    )
+  }
+}
 
-
+class Card extends Component {
+  render() {
     let bgColor = '';
     switch (this.props.party) {
       case 'Independent':
@@ -69,22 +87,23 @@ class Search extends Component {
     super(props);
     this.state = {
       address: '',
-      candidates: []
+      elections: []
     }
   }
 
-  search() {
+  search(e) {
     // let rc = document.getElementById('resultsContainer');
     // while (rc.firstChild) {
     //   rc.removeChild(rc.firstChild)
     // }
+    // e.preventDefault;
   
     let address = document.getElementById('address').value;
-    let vaelects_url = 'http://api.virginiaelects.com/candidates/address/'+address;
+    let vaelects_url = 'http://api.virginiaelects.com/elections/address/'+address;
     let candidateResults;
     fetch(vaelects_url)
       .then(response => response.json())
-      .then(data =>  {this.setState({candidates: data}); console.log(this.state.candidates)});
+      .then(data =>  {this.setState({elections: data}); console.log(this.state.elections)});
     // console.log(candidateResults);
 
     // candidates.foreach(c => {
@@ -113,8 +132,8 @@ class Search extends Component {
           </form>
         </div>
         <div id="resultsContainer">
-        {this.state.candidates.map(c => {
-          return <Card firstName={c.firstName} lastName={c.lastName} party={c.party}/>
+        {this.state.elections.map(e => {
+          return <Election date={e.date} type={e.type} office={e.office} candidates={e.candidates} district={e.district}/>
         })}
         </div>
       </div>
@@ -126,7 +145,7 @@ class App extends Component {
   render() {
     return (
       <div className="App"> 
-        <Header />
+        <Header />  
         <Search />
       </div>
     );
