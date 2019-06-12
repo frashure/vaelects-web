@@ -4,6 +4,7 @@ import './App.css';
 import './Header.css';
 import './Search.css';
 import './Card.css';
+import './Election.css';
 
 
 class Header extends Component {
@@ -22,7 +23,7 @@ class Header extends Component {
 class Election extends Component {
   render() {
     return (
-      <div id='election-container'>
+      <div className='election-container'>
         Date: {this.props.date}
         <br />
         Office: {this.props.office}
@@ -31,11 +32,11 @@ class Election extends Component {
         <br />
         District: {this.props.district}
         <br />
-        Candidates: 
-        <br />
-        {this.props.candidates.map(c => {
+        {this.props.candidates ? 'Candidates:' : null}
+        {this.props.candidates ? this.props.candidates.map(c => {
           return <Card firstName={c.firstName} lastName={c.lastName} party={c.party}/>
-        })}
+        }): null}
+
       </div>
     )
   }
@@ -92,11 +93,6 @@ class Search extends Component {
   }
 
   search(e) {
-    // let rc = document.getElementById('resultsContainer');
-    // while (rc.firstChild) {
-    //   rc.removeChild(rc.firstChild)
-    // }
-    // e.preventDefault;
   
     let address = document.getElementById('address').value;
     let vaelects_url = 'http://api.virginiaelects.com/elections/address/'+address;
@@ -105,13 +101,6 @@ class Search extends Component {
       .then(response => response.json())
       .then(data =>  {this.setState({elections: data}); console.log(this.state.elections)});
     // console.log(candidateResults);
-
-    // candidates.foreach(c => {
-    //   let card = document.createElement('div');
-    //   card.innerHTML = c.first;
-    //   rc.appendChild(card);
-    // })
-    // this.setState({candidates: candidateResults});
 
   }
 
